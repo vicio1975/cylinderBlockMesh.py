@@ -167,9 +167,9 @@ def Geometry():
     fid.write("\nboundary\n")
     fid.write("(\n")
     for j in range(2):
-        fid.write("\t{}\n".format(bcs[j]))
+        fid.write("\t{}\n".format(face[j]))
         fid.write("\t{\n")
-        fid.write("\t\ttype {};\n".format(tipos[bcs[j]]))
+        fid.write("\t\ttype {};\n".format(tipos[face[j]]))
         fid.write("\t\tfaces\n")
         fid.write("\t\t(\n")  
         for i in list(range(j*5,5*(j+1))):
@@ -180,9 +180,9 @@ def Geometry():
         fid.write("\t}\n")
     #walls
     ss = [0,1,1,6,6,7,7,0]
-    fid.write("\t{}\n".format(bcs[2]))
+    fid.write("\t{}\n".format(face[2]))
     fid.write("\t{\n")
-    fid.write("\t\ttype {};\n".format(tipos[bcs[2]]))
+    fid.write("\t\ttype {};\n".format(tipos[face[2]]))
     fid.write("\t\tfaces\n")
     fid.write("\t\t(\n")
     for i in list(range(0,8,2)):
@@ -209,13 +209,19 @@ def Geometry():
 cl = "dictionary"
 loc = "system"
 obj = "blockMeshDict"
+#bcs = "inlet outlet walls".split(" ")
+
+bcs = "faceUP faceDown faceLateral".split(" ")
+face = []
 tipos = {}
-bcs = "inlet outlet walls".split(" ")
 
 print("\n--> Selection of BCs")
 for bc in bcs:
-    q = "    - {}\t: ".format(bc)
-    tipos[bc] = input(q).strip()
+    q1 = "    - Assign a name for the face {}\t: ".format(bc)
+    face.append(input(q1).strip())
+    f = face[-1]
+    q2 = "    - Set a BC type for the face {}\t: ".format(f)
+    tipos[f] = input(q2).strip() 
 
 ########################
 #Geometry specifications
